@@ -1,73 +1,68 @@
-# WebApp Template with React JS
+# Blog de Star Wars — React + SWAPI
 
+Blog de Star Wars en React que consume la API pública de Star Wars (SWAPI): personajes, vehículos y planetas en tarjetas con imagen, página de detalle por elemento, buscador en vivo y lista de favoritos.
 
-Used by 4Geeks.com and 4Geeks Academy students, this template helps to bootstrap your first multi-page web applications by integrating with React latest version, vercel deployments and [Vite](https://4geeks.com/lesson/intro-to-vite-module-bundler) for bundling.
+Ejercicio del bootcamp Full Stack de 4Geeks Academy, completado el 21 de julio de 2026.
 
-### Getting stated:
+## Qué hace
 
-> 📦 Make sure you are using at least node version 20.
+- **Tres categorías** — Characters, Vehicles y Planets — cargadas desde `https://www.swapi.tech/api/`, con navegación lateral para cambiar entre ellas.
+- **Tarjetas con imagen** de cada elemento, con botón "Learn more!" que lleva a su página de detalle.
+- **Página de detalle** (`/single/:theTheme/:theId`) con la foto y todas las propiedades del elemento (excepto `created`, `edited` y `url`).
+- **Buscador en vivo** en la barra superior: busca en las tres categorías a la vez desde 2 caracteres y muestra hasta 6 resultados.
+- **Favoritos**: corazón en cada tarjeta, contador en la barra superior y menú desplegable para verlos y quitarlos.
+- **Imágenes con respaldo**: las fotos vienen del repositorio `breatheco-de/swapi-images`; si una no existe, se muestra un marcador de posición en vez de una imagen rota.
 
-1. Install the node package dependencies by typing: `$ npm install`
+## Stack
 
-2. Create a .env file by typing `$ cp .env.example .env`
+| Tecnología | Uso |
+|-----------|-----|
+| React 18.2 | Componentes y hooks |
+| React Router 6 | Rutas `/` y `/single/:theTheme/:theId` |
+| Context API + `useReducer` | Estado global: people, vehicles, planets, favorites |
+| Vite 4 | Bundler y servidor de desarrollo |
+| Bootstrap 5.3 + Font Awesome | Estilos (por CDN) |
+| SWAPI (`swapi.tech`) | Datos de Star Wars |
 
-3. Start coding! and the vite dev server with live reload by typing: `$ npm run start`
+## Cómo correrlo
 
+Requiere Node ≥ 20.
 
-### Styling
-
-You can update the `./index.css` or create new `.css` files and import them into your current css or js files depending on your needs.
-
-### Components
-
-Add more files into your `./src/components` or styles folder as you need them and import them into your current files as needed.
-
-💡Note: There is an example using the Context API inside `pages/demo.js`;
-
-### Pages
-
-Add more files into your `./js/pages` and import them in `./routes.jsx`.
-Each page must match at least one route inside `routes.jsx`
-
-### Centralized Store with useReducer
-
-This template comes with a centralized & general state that's shared with all pages and compoentes, we call it "the store".   
-
-The file `./src/store.js` has a default structure for the store, we encourage you to change it and adapt it to your data needs (for example, if you are doing a `Todo list` you will probably have a array of todos here).
-
-+ Learn [how the useReducer works](https://4geeks.com/lesson/optimize-react-components-usereducer).
-+ Read more about [implementing a global state with Context API](https://4geeks.com/lesson/context-api)
-+ Read more about [react hooks](https://content.breatheco.de/lesson/react-hooks-explained)
-
-The store `Provider` for this context is already set on `./src/main.jsx`. You can access the store from any component using the `useGlobalReducer` hook to get the `store` and `dispatcher`. Check `/views/demo.js` to see a demo. Here is a smaller sample:
-
-```jsx
-import useGlobalReducer from "./src/hooks/useGlobalReducer";
-
-const MyComponentSuper = () => {
-  //here you use the hook to get dispatcher and store
-  import { dispatch, store } = useGlobalReducer();
-
-  return <div>{/* you can use your actions or store inside the html */}</div>
-}
+```bash
+npm install
+npm run start
 ```
 
-## Publish your website!
+La app abre en `http://localhost:3000`.
 
-1. **Vercel:** The FREE recomended hosting provider is [vercel.com](https://vercel.com/), you can deploy in 1 minutes by typing the following 2 commands:
+## Estructura
 
-Login (you need to have an account):
-```sh
-$ npm i vercel -g && vercel login
 ```
-Deploy:
-```sh
-$ vercel --prod
+src/
+├── pages/
+│   ├── Home.jsx        # Categorías, carga de datos y rejilla de tarjetas
+│   └── Single.jsx      # Página de detalle de un elemento
+├── components/
+│   ├── Card.jsx        # Tarjeta con imagen, "Learn more!" y favorito
+│   ├── Navbar.jsx      # Buscador en vivo y menú de favoritos
+│   └── Footer.jsx
+├── store.js            # Estado inicial y reducer (set_people, set_vehicles,
+│                       # set_planets, add_favorite, remove_favorite)
+├── routes.jsx          # Definición de rutas
+└── main.jsx
 ```
-✎ Note: If you don't have an account just go to vercel.com, create a account and come back here.
 
-![Vercel example procedure to deploy](https://github.com/4GeeksAcademy/react-hello-webapp/blob/4b530ba091a981d3916cc6e960e370decaf2e234/docs/deploy.png?raw=true)
+## Qué demuestra
 
-## Contributors
+- Consumo de una API REST pública con `fetch` y `async/await`, tres endpoints en paralelo al cargar.
+- Estado global con Context API + `useReducer`, con favoritos que se añaden y quitan desde dos lugares distintos (tarjeta y menú).
+- Rutas dinámicas con dos parámetros (`:theTheme`, `:theId`).
+- Búsqueda en vivo sobre datos ya cargados, con navegación directa al detalle.
+- Manejo de imágenes que fallan con `onError` y marcador de posición.
 
-This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning) and [CyberSecurity Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/cybersecurity).
+## Notas
+
+- El repo incluye `vercel.json`, así que está listo para desplegarse en Vercel con `vercel --prod`.
+- Los favoritos viven solo en memoria: se pierden al recargar la página.
+- La página `/demo` es un resto de la plantilla, sin uso en la app.
+- Construido sobre la plantilla `react-hello-webapp` de 4Geeks Academy.
